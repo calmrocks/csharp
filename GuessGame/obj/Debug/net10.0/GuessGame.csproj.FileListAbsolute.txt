@@ -1,0 +1,15 @@
+/Users/yinglonw/src/csharp/GuessGame/bin/Debug/net10.0/GuessGame
+/Users/yinglonw/src/csharp/GuessGame/bin/Debug/net10.0/GuessGame.deps.json
+/Users/yinglonw/src/csharp/GuessGame/bin/Debug/net10.0/GuessGame.runtimeconfig.json
+/Users/yinglonw/src/csharp/GuessGame/bin/Debug/net10.0/GuessGame.dll
+/Users/yinglonw/src/csharp/GuessGame/bin/Debug/net10.0/GuessGame.pdb
+/Users/yinglonw/src/csharp/GuessGame/obj/Debug/net10.0/GuessGame.GeneratedMSBuildEditorConfig.editorconfig
+/Users/yinglonw/src/csharp/GuessGame/obj/Debug/net10.0/GuessGame.AssemblyInfoInputs.cache
+/Users/yinglonw/src/csharp/GuessGame/obj/Debug/net10.0/GuessGame.AssemblyInfo.cs
+/Users/yinglonw/src/csharp/GuessGame/obj/Debug/net10.0/GuessGame.csproj.CoreCompileInputs.cache
+/Users/yinglonw/src/csharp/GuessGame/obj/Debug/net10.0/GuessGame.sourcelink.json
+/Users/yinglonw/src/csharp/GuessGame/obj/Debug/net10.0/GuessGame.dll
+/Users/yinglonw/src/csharp/GuessGame/obj/Debug/net10.0/refint/GuessGame.dll
+/Users/yinglonw/src/csharp/GuessGame/obj/Debug/net10.0/GuessGame.pdb
+/Users/yinglonw/src/csharp/GuessGame/obj/Debug/net10.0/GuessGame.genruntimeconfig.cache
+/Users/yinglonw/src/csharp/GuessGame/obj/Debug/net10.0/ref/GuessGame.dll
