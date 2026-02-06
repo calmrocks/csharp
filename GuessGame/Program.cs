@@ -1,101 +1,186 @@
 ﻿using System;
 
+namespace GuessGame;
+
 class Program
 {
-    static void Main()
+    static void Main(string[] args)
     {
-        int minRange = 1;
-        int maxRange = 100;
-        
-        // ===== Player 1: Set the secret number =====
-        int secretNumber;
+        bool playAgain = true;
 
+        Console.WriteLine("================================");
+        Console.WriteLine("   Welcome to Guess the Number!");
+        Console.WriteLine("================================");
+        Console.WriteLine();
 
-        
-        
-        while (true)
+        while (playAgain)
         {
-            Console.Write($"Player 1, enter a number ({minRange}-{maxRange}): ");
-            string input = Console.ReadLine();
-            
-            // Validation 1: Check if it's a valid number
-            if (!int.TryParse(input, out secretNumber))
-            {
-                Console.WriteLine("Error: Please enter a valid number!");
-                continue;
-            }
-            
-            // Validation 2: Check if it's in range
-            if (secretNumber < minRange || secretNumber > maxRange)
-            {
-                Console.WriteLine($"Error: Number must be between {minRange} and {maxRange}!");
-                continue;
-            }
-            
-            // Valid input, break the loop
-            break;
+            PlayGame();
+            playAgain = AskPlayAgain();
         }
-        
-        // Clear screen to hide the number
-        Console.Clear();
-        
-        // ===== Player 2: Guess the number =====
-        Console.WriteLine("========================================");
-        Console.WriteLine("   Player 2, start guessing!");
-        Console.WriteLine($"   Range: {minRange} - {maxRange}");
-        Console.WriteLine("========================================");
+
+        Console.WriteLine();
+        Console.WriteLine("Thanks for playing! Goodbye!");
+    }
+
+    static void PlayGame()
+    {
+        int playerCount = GetPlayerCount();
+        int secretNumber;
+        int minNumber = 1;
+        int maxNumber = 100;
+
+        if (playerCount == 1)
+        {
+            // Single player - random number
+            Random random = new Random();
+            secretNumber = random.Next(minNumber, maxNumber + 1);
+            Console.WriteLine();
+            Console.WriteLine($"I'm thinking of a number between {minNumber} and {maxNumber}...");
+        }
+        else
+        {
+            // Two players - Player 1 sets the number
+            secretNumber = GetSecretNumberFromPlayer(minNumber, maxNumber);
+        }
+
         Console.WriteLine();
         
-        int guess;
-        int attempts = 0;
-        
+        // Player (or Player 2) guesses
+        string guesserName = playerCount == 1 ? "Player" : "Player 2";
+        int attempts = PlayGuessingRound(secretNumber, minNumber, maxNumber, guesserName);
+
+        // Show results
+        Console.WriteLine();
+        Console.WriteLine("================================");
+        Console.WriteLine($"🎉 Congratulations! The number was {secretNumber}");
+        Console.WriteLine($"   Guessed in {attempts} {(attempts == 1 ? "attempt" : "attempts")}!");
+        Console.WriteLine("================================");
+    }
+
+    static int GetPlayerCount()
+    {
         while (true)
         {
-            Console.Write("Your guess: ");
-            string input = Console.ReadLine();
-            
-            // Validation 1: Check if it's a valid number
-            if (!int.TryParse(input, out guess))
+            Console.Write("How many players? (1 or 2): ");
+            string? input = Console.ReadLine();
+
+            if (int.TryParse(input, out int count) && (count == 1 || count == 2))
             {
-                Console.WriteLine("Error: Please enter a valid number!");
+                return count;
+            }
+
+            Console.WriteLine("Please enter 1 or 2.");
+        }
+    }
+
+    static int GetSecretNumberFromPlayer(int min, int max)
+    {
+        Console.WriteLine();
+        Console.WriteLine("┌─────────────────────────────────────────┐");
+        Console.WriteLine("│         PLAYER 1 - SET THE NUMBER       │");
+        Console.WriteLine("│   (Player 2, please look away!)         │");
+        Console.WriteLine("└─────────────────────────────────────────┘");
+        Console.WriteLine();
+
+        int secretNumber;
+
+        while (true)
+        {
+            Console.Write($"Player 1, enter a number between {min} and {max}: ");
+            string? input = Console.ReadLine();
+
+            if (int.TryParse(input, out secretNumber) && secretNumber >= min && secretNumber <= max)
+            {
+                break;
+            }
+
+            Console.WriteLine($"Please enter a valid number between {min} and {max}.");
+        }
+
+        // Clear screen so Player 2 can't see
+        Console.WriteLine();
+        Console.WriteLine("Press any key to clear screen for Player 2...");
+        Console.ReadKey(true);
+        Console.Clear();
+
+        Console.WriteLine("================================");
+        Console.WriteLine("   Welcome to Guess the Number!");
+        Console.WriteLine("================================");
+        Console.WriteLine();
+        Console.WriteLine("┌─────────────────────────────────────────┐");
+        Console.WriteLine("│         PLAYER 2 - YOUR TURN!           │");
+        Console.WriteLine("│   Player 1 has set a secret number.     │");
+        Console.WriteLine("└─────────────────────────────────────────┘");
+        Console.WriteLine();
+        Console.WriteLine($"Guess the number between {min} and {max}!");
+
+        return secretNumber;
+    }
+
+    static int PlayGuessingRound(int secretNumber, int min, int max, string playerName)
+    {
+        int attempts = 0;
+
+        while (true)
+        {
+            Console.Write($"{playerName}, enter your guess: ");
+            string? input = Console.ReadLine();
+
+            if (!int.TryParse(input, out int guess))
+            {
+                Console.WriteLine("Please enter a valid number.");
                 continue;
             }
-            
-            // Validation 2: Check if it's in range
-            if (guess < minRange || guess > maxRange)
+
+            if (guess < min || guess > max)
             {
-                Console.WriteLine($"Error: Please guess a number between {minRange} and {maxRange}!");
+                Console.WriteLine($"Please enter a number between {min} and {max}.");
                 continue;
             }
-            
-            // Valid guess, count the attempt
+
             attempts++;
 
-            // Check the guess
-            if (guess > secretNumber)
+            if (guess == secretNumber)
             {
-                Console.WriteLine("Too high! \nTry again.");
-
+                return attempts;
             }
             else if (guess < secretNumber)
             {
-                Console.WriteLine("Too low! \nTry again.");
+                Console.WriteLine("📈 Too low! Try higher.");
             }
             else
             {
-                // Correct guess!
-                break;
+                Console.WriteLine("📉 Too high! Try lower.");
             }
-            
-            Console.WriteLine();
         }
-        
-        // ===== Game Over =====
+    }
+
+    static bool AskPlayAgain()
+    {
         Console.WriteLine();
-        Console.WriteLine("========================================");
-        Console.WriteLine($"  Congratulations! You got it!");
-        Console.WriteLine($"  The number was: {secretNumber}");
-        Console.WriteLine($"  Attempts: {attempts}");
-        Console.WriteLine("========================================");
+
+        while (true)
+        {
+            Console.Write("Play again? (yes/no): ");
+            string? input = Console.ReadLine()?.Trim().ToLower();
+
+            if (input == "yes" || input == "y")
+            {
+                Console.Clear();
+                Console.WriteLine("================================");
+                Console.WriteLine("   Welcome to Guess the Number!");
+                Console.WriteLine("================================");
+                Console.WriteLine();
+                return true;
+            }
+
+            if (input == "no" || input == "n")
+            {
+                return false;
+            }
+
+            Console.WriteLine("Please enter 'yes' or 'no'.");
+        }
     }
 }
