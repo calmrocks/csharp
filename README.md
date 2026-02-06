@@ -33,7 +33,7 @@ dotnet build
 ### Run a Specific Project
 
 ~~~bash
-dotnet run --project guess-game
+dotnet run --project GuessGame
 ~~~
 
 ## Managing Projects
